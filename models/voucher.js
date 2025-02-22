@@ -24,16 +24,19 @@ const voucherSchema = new mongoose.Schema(
         required: true,
       },
       status: {
-        type: Boolean,
+        type: String,
+        enum: ["active", "expired", "inactive"],
         default: true,
       },
       redeemedBy: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        user: {type: mongoose.Schema.Types.ObjectId,
+        ref: "User"},
+        date: Date,
       }],
-      redemptionDate: [{
-        type: Date,
-      }],
+      globalRedemptionCount:{
+        type: Number,
+        default: 0
+      }
     },
     { timestamps: true }
 )
