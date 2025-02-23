@@ -4,7 +4,6 @@
 //   try {
 //     const token = req.headers.authorization.split(' ')[1];
 //     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
 //     req.user = decoded;
     
 //     next();
@@ -33,6 +32,7 @@ function verifyToken(req, res, next) {
 
     const token = tokenParts[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
 
     console.log("Decoded Token:", decoded); // 🔍 Log the decoded token payload
 
