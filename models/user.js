@@ -13,12 +13,12 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     required: true,
-    enum: ["Shopper", "Staff"],
+    enum: ["shopper", "staff"],
   },
   vouchers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Voucher' }],
 },
 { timestamps: true }
-);
+)
 
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {

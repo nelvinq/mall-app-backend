@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const User = require('../models/user');
 
@@ -15,7 +16,7 @@ router.post('/sign-up', async (req, res) => {
       return res.status(409).json({err: 'Username already taken.'});
     }
     
-    const hashedPassword = bcrypt.hashSync(req.body.password, saltRounds);
+    const hashedPassword = await bcrypt.hashSync(req.body.password, saltRounds);
 
     const user = await User.create({
       username: req.body.username,
@@ -24,8 +25,8 @@ router.post('/sign-up', async (req, res) => {
     });
 
     const payload = { username: user.username, role: user.role,_id: user._id };
-
-    const token = jwt.sign(payload, process.env.JWT_SECRET);
+    console.log(process.env.JWT_SECRET)
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     res.status(201).json({message: "Sign-up successful.", token });
   } catch (err) {
@@ -40,7 +41,7 @@ router.post('/sign-in', async (req, res) => {
       return res.status(401).json({ err: 'Invalid credentials.' });
     }
 
-    const isPasswordCorrect = bcrypt.compareSync(
+    const isPasswordCorrect = await bcrypt.compareSync(
       req.body.password, user.password
     );
     if (!isPasswordCorrect) {
@@ -48,10 +49,11 @@ router.post('/sign-in', async (req, res) => {
     }
 
     const payload = { username: user.username, role: user.role, _id: user._id };
+    console.log(process.env.JWT_SECRET)
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET);
-
-    res.status(200).json({ message: "Sign-in successful.", token });
+    res.status(200).json({ message: "Sign-in successful.", token, user: { username: user.username, role: user.role }
+    });
   } catch (err) {
     res.status(500).json({ err: err.message });
   }

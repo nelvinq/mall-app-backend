@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/", verifyToken, async (req, res) => {
     try {
-        if (req.user.role === "Staff"){
+        if (req.user.role === "staff"){
         const voucher = await Voucher.create(req.body);
         res.status(201).json(voucher);}
         else{
@@ -36,7 +36,7 @@ router.post("/", verifyToken, async (req, res) => {
 
       router.put("/:voucherId", verifyToken, async (req, res) => {
         try {
-            if (req.user.role === "Staff"){
+            if (req.user.role === "staff"){
                 const updatedVoucher = await Voucher.findByIdAndUpdate(req.params.voucherId, req.body, {new:true})
                 res.status(200).json(updatedVoucher);
             } else{
@@ -49,7 +49,7 @@ router.post("/", verifyToken, async (req, res) => {
 
         router.delete("/:voucherId", verifyToken, async (req, res) => {
             try {
-                if (req.user.role === "Staff"){
+                if (req.user.role === "staff"){
                     const deletedVoucher = await Voucher.findByIdAndDelete(req.params.voucherId)
                     res.status(200).json(deletedVoucher);
                 } else{
