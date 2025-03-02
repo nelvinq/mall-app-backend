@@ -77,7 +77,6 @@ router.post("/redeem/:voucherId", verifyToken, async (req, res) => {
         return res.status(404).json({ err: "Voucher not found" });
       }
 
-      // Check if the user has reached the redemption limit
       const userRedemptionCount = voucher.redeemedBy.filter(
         (entry) => entry.user.toString() === userId.toString()
       ).length;
@@ -86,7 +85,6 @@ router.post("/redeem/:voucherId", verifyToken, async (req, res) => {
         return res.status(400).json({ err: "Redemption limit reached" });
       }
 
-      // Add redemption to the voucher
       voucher.redeemedBy.push({ user: userId, date: new Date() });
       voucher.globalRedemptionCount += 1;
 

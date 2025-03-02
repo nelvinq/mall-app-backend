@@ -1,24 +1,8 @@
-// const jwt = require('jsonwebtoken');
-
-// function verifyToken(req, res, next) {
-//   try {
-//     const token = req.headers.authorization.split(' ')[1];
-//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-//     req.user = decoded;
-    
-//     next();
-//   } catch (err) {
-//     res.status(401).json({ err: 'Invalid token.' });
-//   }
-// }
-
-// module.exports = verifyToken;
-
 const jwt = require('jsonwebtoken');
 
 function verifyToken(req, res, next) {
   try {
-    console.log("Authorization Header:", req.headers.authorization); // 🔍 Log the Authorization header
+    console.log("Authorization Header:", req.headers.authorization);
     if (!req.headers.authorization) {
       console.error("No Authorization header found");
       return res.status(401).json({ err: 'No token provided.' });
@@ -34,12 +18,12 @@ function verifyToken(req, res, next) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
 
-    console.log("Decoded Token:", decoded); // 🔍 Log the decoded token payload
+    console.log("Decoded Token:", decoded);
 
     req.user = decoded;
     next();
   } catch (err) {
-    console.error("Token verification error:", err.message); // 🔍 Log any token errors
+    console.error("Token verification error:", err.message);
     return res.status(401).json({ err: 'Invalid or expired token.' });
   }
 }
