@@ -19,7 +19,7 @@ const voucherSchema = new mongoose.Schema(
       endDate: {
         type: Date,
       },
-      usagePerShopper: {
+      redemptionsPerShopper: {
         type: Number,
         required: true,
       },

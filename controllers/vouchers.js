@@ -82,7 +82,7 @@ router.post("/redeem/:voucherId", verifyToken, async (req, res) => {
         (entry) => entry.user.toString() === userId.toString()
       ).length;
 
-      if (userRedemptionCount >= voucher.usagePerShopper) {
+      if (userRedemptionCount >= voucher.redemptionsPerShopper) {
         return res.status(400).json({ err: "Redemption limit reached" });
       }
 
