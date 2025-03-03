@@ -4,13 +4,13 @@ function verifyToken(req, res, next) {
   try {
     if (!req.headers.authorization) {
       console.error("No Authorization header found");
-      return res.status(401).json({ err: 'No token provided.' });
+      return res.status(401).json({ error: 'No token provided.' });
     }
 
     const tokenParts = req.headers.authorization.split(' ');
     if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
       console.error("Malformed Authorization header:", req.headers.authorization);
-      return res.status(401).json({ err: 'Malformed token format.' });
+      return res.status(401).json({ error: 'Malformed token format.' });
     }
 
     const token = tokenParts[1];
@@ -19,7 +19,7 @@ function verifyToken(req, res, next) {
     next();
   } catch (error) {
     console.error("Token verification error:", err.message);
-    return res.status(401).json({ err: 'Invalid or expired token.' });
+    return res.status(401).json({ error: 'Invalid or expired token.' });
   }
 }
 
