@@ -10,8 +10,8 @@ router.get('/', verifyToken, async (req, res) => {
     const users = await User.find({}, "username role");
 
     res.json(users);
-  } catch (err) {
-    res.status(500).json({ err: err.message });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
