@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 
 function verifyToken(req, res, next) {
   try {
-    console.log("Authorization Header:", req.headers.authorization);
     if (!req.headers.authorization) {
       console.error("No Authorization header found");
       return res.status(401).json({ err: 'No token provided.' });
@@ -16,13 +15,9 @@ function verifyToken(req, res, next) {
 
     const token = tokenParts[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-
-    console.log("Decoded Token:", decoded);
-
     req.user = decoded;
     next();
-  } catch (err) {
+  } catch (error) {
     console.error("Token verification error:", err.message);
     return res.status(401).json({ err: 'Invalid or expired token.' });
   }

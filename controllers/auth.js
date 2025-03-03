@@ -13,7 +13,7 @@ router.post('/sign-up', async (req, res) => {
     const userInDatabase = await User.findOne({ username: req.body.username });
     
     if (userInDatabase) {
-      return res.status(409).json({err: 'Username already taken.'});
+      return res.status(409).json({error: 'Username already taken.'});
     }
     
     const hashedPassword = await bcrypt.hashSync(req.body.password, saltRounds);
@@ -25,12 +25,11 @@ router.post('/sign-up', async (req, res) => {
     });
 
     const payload = { username: user.username, role: user.role,_id: user._id };
-    console.log(process.env.JWT_SECRET)
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     res.status(201).json({message: "Sign-up successful.", token });
-  } catch (err) {
-    res.status(500).json({ err: err.message });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -38,32 +37,31 @@ router.post('/sign-in', async (req, res) => {
   try {
     const user = await User.findOne({ username: req.body.username });
     if (!user) {
-      return res.status(401).json({ err: 'Invalid credentials.' });
+      return res.status(401).json({ error: 'Invalid credentials.' });
     }
 
     const isPasswordCorrect = await bcrypt.compareSync(
       req.body.password, user.password
     );
     if (!isPasswordCorrect) {
-      return res.status(401).json({ err: 'Invalid credentials.' });
+      return res.status(401).json({ error: 'Invalid credentials.' });
     }
 
     const payload = { username: user.username, role: user.role, _id: user._id };
-    console.log(process.env.JWT_SECRET)
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     res.status(200).json({ message: "Sign-in successful.", token, user: { username: user.username, role: user.role }
     });
-  } catch (err) {
-    res.status(500).json({ err: err.message });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
 router.get("/sign-out", (req, res) => {
   try {
     res.status(200).json({ message: "Sign-out successful." });
-  } catch (err) {
-    res.status(500).json({ err: err.message });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
