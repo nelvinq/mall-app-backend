@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const voucherSchema = require('./voucher')
 
 const userSchema = new mongoose.Schema({
   username: {
