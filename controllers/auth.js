@@ -57,7 +57,7 @@ router.post('/sign-in', async (req, res) => {
   }
 });
 
-router.get("/sign-out", (req, res) => {
+router.get("/sign-out", (res) => {
   try {
     res.status(200).json({ message: "Sign-out successful." });
   } catch (error) {
